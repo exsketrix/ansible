@@ -6,12 +6,10 @@ jobs:
       image: ubuntu-1604:201903-01
     steps:
       - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
-
-dependencies:
-  pre:
-    - pip install ansible
-    - pip install --upgrade setuptools
+      - run:
+          command: |  # use pipenv to install dependencies
+            sudo pip install ansible
+            pip install --upgrade setuptools
 
 #deployment:
 #  prod:
