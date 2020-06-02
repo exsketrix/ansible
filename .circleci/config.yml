@@ -23,16 +23,13 @@ jobs:
       - run:
           name: Check whether tag build already exists in dockerhub
           command: |
-            if [[ 1 -eq 0 ]] ; then
-              echo boo
-            fi
             export DOCKER_CLI_EXPERIMENTAL=enabled
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             #DOCKER_TAG=`docker images | grep ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
             DOCKER_TAG=3.9.9
             TAG_NOT_EXISTS=`docker manifest inspect ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG > /dev/null; echo $?`
             echo $TAG_NOT_EXISTS
-            if [[ 1 -eq 0 ]] ; then
+            if [[ ${TAG_NOT_EXISTS} -eq 1 ]] ; then
               echo boo
             fi
       #- run: 
