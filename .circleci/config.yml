@@ -10,11 +10,16 @@ jobs:
           name: "Set Python Version"
           command: pyenv global 3.7.0
       - run:
-          name: install ansible
+          name: Install Ansible
           command: |  # use pipenv to install dependencies
             python  --version
             pip install ansible
             pip install docker
-      - run: 
+      - run:
           name: Execute Ansible Playbook
           command: ansible-playbook -i inventory create-docker-image.yml
+      - run: 
+          name: Publish Image to Docker Hub
+          command: |
+            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+            docker images | grep exsketrix/ansible | awk '{print $2}'
