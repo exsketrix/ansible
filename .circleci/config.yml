@@ -15,10 +15,6 @@ jobs:
             python  --version
             pip --version
             sudo pip install ansible
-            sudo pip install --upgrade setuptools
-
-#deployment:
-#  prod:
-#    branch: master
-#    commands:
-#      - ansible-playbook -i inventory create-docker-image.yml
+      - run: 
+          name: Execute Ansible Playbook
+          command: ansible-playbook -i inventory create-docker-image.yml
