@@ -22,7 +22,7 @@ jobs:
           name: Execute Molecule and Testinfra against built Image
           command: |
             cd roles/${CIRCLE_PROJECT_REPONAME}-role
-            docker run --rm -it -v "$(pwd)":/tmp/$(basename "${PWD}"):rw -v /var/run/docker.sock:/var/run/docker.sock -w /tmp/$(basename "${PWD}") quay.io/ansible/molecule:3.0.3
+            docker run --rm -it -v "$(pwd)":/tmp/$(basename "${PWD}"):rw -v /var/run/docker.sock:/var/run/docker.sock -w /tmp/$(basename "${PWD}") quay.io/ansible/molecule:3.0.3 molecule test
 # TODO: Add in test step to execute molecule before publishing and also try a dummy playbook execution
       - run:
           name: Publish to Dockerhub
