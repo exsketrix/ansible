@@ -21,5 +21,5 @@ jobs:
       - run: 
           name: Publish Image to Docker Hub
           command: |
-            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker images | grep exsketrix/ansible | awk '{print $2}'
