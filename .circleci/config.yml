@@ -7,10 +7,15 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run:
+          name: "Set Python Version"
+          command: pyenv global 3.7.0
+      - run:
+          name: install ansible
           command: |  # use pipenv to install dependencies
-            python3.7  --version
-            sudo pip3.7 install ansible
-            sudo pip3.7 install --upgrade setuptools
+            python  --version
+            pip --version
+            sudo pip install ansible
+            sudo pip install --upgrade setuptools
 
 #deployment:
 #  prod:
