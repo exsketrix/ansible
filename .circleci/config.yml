@@ -30,8 +30,6 @@ jobs:
             TAG_NOT_EXISTS=`docker manifest inspect ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG > /dev/null; echo $?`
             if [ $TAG_NOT_EXISTS ] ; then
               echo the tag doesn't exist
-            else
-              echo the tag does exist
             fi
       #- run: 
       #    name: Publish Image to Docker Hub
