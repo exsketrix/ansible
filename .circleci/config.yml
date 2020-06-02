@@ -22,7 +22,7 @@ jobs:
           name: Publish Image to Docker Hub
           command: |
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            DOCKER_TAG=`docker images | grep exsketrix/ansible | awk '{print $2}'`
-            docker tag ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
-            docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
-            docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
+            DOCKER_TAG=`docker images | grep exsketrix/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
+            docker tag exsketrix/${CIRCLE_PROJECT_REPONAME}:latest exsketrix/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
+            docker push exsketrix/${CIRCLE_PROJECT_REPONAME}:latest
+            docker push exsketrix/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
