@@ -13,8 +13,8 @@ jobs:
           name: install ansible
           command: |  # use pipenv to install dependencies
             python  --version
-            sudo pip install ansible
-            sudo pip install docker
+            pip install ansible
+            pip install docker
       - run: 
           name: Execute Ansible Playbook
-          command: sudo ansible-playbook -i inventory create-docker-image.yml
+          command: ansible-playbook -i inventory create-docker-image.yml
