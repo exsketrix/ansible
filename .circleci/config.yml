@@ -23,8 +23,7 @@ jobs:
       - run:
           name: Check whether tag build already exists in dockerhub
           command: |
-            mkdir ~/.docker
-            echo '{"experimental": "enabled"}' > ~/.docker/config.json
+            DOCKER_CLI_EXPERIMENTAL=enabled
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             TAG_EXISTS=`docker manifest inspect ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG > /dev/null; echo $?`
             echo $TAG_EXISTS
