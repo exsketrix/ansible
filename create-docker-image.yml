@@ -1,0 +1,6 @@
+---
+
+- name: Create Docker Image
+  hosts: all
+  roles:
+    - ansible-role

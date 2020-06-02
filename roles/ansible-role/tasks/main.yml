@@ -1,0 +1,65 @@
+---
+
+- name: Obtain Latest version of Ansible
+  script: "latest_ansible_version.py"
+  register: ansible_version_shell_cmd
+  args:
+    warn: no
+    executable: python3
+  changed_when: False
+
+- name: Set Latest version
+  set_fact:
+    ansible_latest_version: "{{ ansible_version_shell_cmd.stdout }}"
+
+- name: Substitute Dockerfile Template to playbook directory
+  template:
+    src: "Dockerfile.j2"
+    dest: "{{ playbook_dir }}/Dockerfile"
+
+- name: Substitute molecule Template to molecule directory
+  template:
+    src: "Molecule.yml.j2"
+    dest: "{{ role_path }}/../ansible-role/molecule/default/molecule.yml"
+
+- name: Copy entrypoint file to playbook directory
+  file:
+    path: "{{ playbook_dir }}/entrypoint.sh"
+    src: "{{ role_path }}/files/entrypoint.sh"
+    force: yes
+    state: hard
+
+# TODO: This should use the docker_container action once solution to accepting stdin in cmd found
+- name: Execute Docker Lint
+  shell: "docker run --rm -i hadolint/hadolint:latest < {{ playbook_dir }}/Dockerfile"
+  args:
+    warn: no
+  failed_when: False
+  changed_when: False
+  register: docker_lint_cmd
+
+- name: Docker Lint Warnings
+  debug: 
+    msg: "{{ docker_lint_cmd.stdout }}"
+  when: docker_lint_cmd.stdout
+
+- name: Build Docker Image
+  docker_image:
+    source: build
+    state: present
+    force_source: yes
+    build:
+      path: "{{ playbook_dir }}"
+      pull: yes
+    name: "exsketrix/ansible"
+    tag: "{{ ansible_latest_version }}"
+
+- name: Ensure Dockerfile removed
+  file:
+    path: "{{ playbook_dir }}/Dockerfile"
+    state: absent
+
+- name: Ensure entrypoint.sh removed
+  file:
+    path: "{{ playbook_dir }}/entrypoint.sh"
+    state: absent

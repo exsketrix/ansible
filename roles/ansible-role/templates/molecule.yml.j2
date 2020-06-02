@@ -1,0 +1,30 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  yamllint .
+  ansible-lint .
+  flake8
+platforms:
+  - name: default-platform
+    image: "exsketrix/ansible:{{ansible_latest_version}}"
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
+scenario:
+  test_sequence:
+    - lint
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
