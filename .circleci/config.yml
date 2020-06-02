@@ -8,8 +8,9 @@ jobs:
       - checkout # check out the code in the project directory
       - run:
           command: |  # use pipenv to install dependencies
-            sudo pip install ansible
-            pip install --upgrade setuptools
+            python3 --version
+            pip3 install ansible
+            pip3 install --upgrade setuptools
 
 #deployment:
 #  prod:
