@@ -24,6 +24,7 @@ jobs:
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             DOCKER_TAG=`docker images | grep exsketrix/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
             echo $DOCKER_TAG
-            echo docker tag exsketrix/${CIRCLE_PROJECT_REPONAME}:latest exsketrix/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
+            echo docker images
+            docker tag exsketrix/$:latest exsketrix/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
             docker push exsketrix/${CIRCLE_PROJECT_REPONAME}:latest
             docker push exsketrix/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
