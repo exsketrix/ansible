@@ -18,8 +18,16 @@ jobs:
       - run:
           name: Execute Ansible Playbook
           command: ansible-playbook -i inventory create-docker-image.yml
+      - run:
+          name: Execute Molecule and Testinfra against built Image
+          command: |
+            cd roles/${CIRCLE_PROJECT_REPONAME}-role
+            docker run --rm -it \                                
+            -v "$(pwd)":/tmp/$(basename "${PWD}"):rw \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -w /tmp/$(basename "${PWD}") \
+            quay.io/ansible/molecule:3.0.3 \
 # TODO: Add in test step to execute molecule before publishing and also try a dummy playbook execution
-# TODO: Make publishing conditional on whether tag already exists in repository
       - run:
           name: Publish to Dockerhub
           command: |
@@ -27,7 +35,6 @@ jobs:
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             DOCKER_TAG=`docker images | grep ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
             TAG_NOT_EXISTS=`docker manifest inspect ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG > /dev/null; echo $?`
-            echo $TAG_NOT_EXISTS
             if [[ ${TAG_NOT_EXISTS} -eq 1 ]] ; then
               docker tag ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
