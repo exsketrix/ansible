@@ -19,7 +19,7 @@
 
 - name: Substitute molecule Template to molecule directory
   template:
-    src: "Molecule.yml.j2"
+    src: "molecule.yml.j2"
     dest: "{{ role_path }}/../ansible-role/molecule/default/molecule.yml"
 
 - name: Copy entrypoint file to playbook directory
