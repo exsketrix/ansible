@@ -1,18 +1,24 @@
 version: 2.1
 
-machine:
-  services:
-    - docker
-  python:
-    version: 3.6.0
+jobs:
+  build:
+    machine:
+      image: ubuntu-1604:201903-01
+      services:
+        - docker
+      python:
+        version: 3.6.0
+    steps:
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" # run the `echo` command
 
-dependencies:
-  pre:
-    - pip install ansible
-    - pip install --upgrade setuptools
+#dependencies:
+#  pre:
+#    - pip install ansible
+#    - pip install --upgrade setuptools
 
-deployment:
-  prod:
-    branch: master
-    commands:
-      - ansible-playbook -i inventory create-docker-image.yml
+#deployment:
+#  prod:
+#    branch: master
+#    commands:
+#      - ansible-playbook -i inventory create-docker-image.yml
