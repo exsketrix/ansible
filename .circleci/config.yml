@@ -8,10 +8,10 @@ jobs:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
 
-#dependencies:
-#  pre:
-#    - pip install ansible
-#    - pip install --upgrade setuptools
+dependencies:
+  pre:
+    - pip install ansible
+    - pip install --upgrade setuptools
 
 #deployment:
 #  prod:
