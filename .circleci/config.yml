@@ -18,6 +18,8 @@ jobs:
       - run:
           name: Execute Ansible Playbook
           command: ansible-playbook -i inventory create-docker-image.yml
+# TODO: Add in test step to execute molecule before publishing and also try a dummy playbook execution
+# TODO: Make publishing conditional on whether tag already exists in repository
       - run: 
           name: Publish Image to Docker Hub
           command: |
