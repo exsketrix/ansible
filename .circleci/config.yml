@@ -18,7 +18,7 @@ jobs:
             pip install ansible
             pip install docker
       - run:
-          name: Execute Ansible Playbook
+          name: Create Docker Image
           command: ansible-playbook -i inventory create-docker-image.yml
       - run:
           name: Execute Molecule and Testinfra against built Image

@@ -11,12 +11,3 @@
 - name: Output result of Hello World Cmd Execution
   debug:
     msg: "{{ hello_cmd.stdout }}"
-
-- name: Test able to execute another Docker Image
-  docker_container:
-    name: hello_world_example
-    image: hello-world:latest
-    detach: false
-    recreate: true
-    auto_remove: true
-    cleanup: true
