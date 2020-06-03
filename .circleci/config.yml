@@ -60,3 +60,7 @@ workflows:
     triggers:
       - schedule:
           cron: "22 26 * * *"
+          filters:
+            branches:
+              only:
+                - master
