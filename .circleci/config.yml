@@ -30,8 +30,6 @@ jobs:
             export DOCKER_CLI_EXPERIMENTAL=enabled
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             DOCKER_TAG=`docker images | egrep ^${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
-            echo $DOCKER_TAG
-            docker images
             TAG_NOT_EXISTS=`docker manifest inspect ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG > /dev/null; echo $?`
             if [[ ${TAG_NOT_EXISTS} -eq 1 ]] ; then
               docker tag ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
