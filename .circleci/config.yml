@@ -2,7 +2,7 @@ version: 2.1
 
 # Convert to workflow and add daily execution
 jobs:
-  build:
+  Workflow:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -48,3 +48,18 @@ jobs:
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
             fi
+
+workflows:
+  #per-commit:
+  #  jobs:
+  #    - build
+  nightly:
+    jobs:
+      - build
+    triggers:
+      - schedule:
+          cron: "23 09 * * *"
+          filters:
+            branches:
+              only:
+                - master
