@@ -28,15 +28,18 @@ jobs:
       - run:
           name: Execute Ansible Docker Image against a sample playbook
           command: |
-            DOCKER_TAG=`docker images | egrep ^${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
+            export DOCKER_TAG=`docker images | egrep ^${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
             cd test-playbook
             docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG ansible-playbook -i /ansible-playbook/inventory /ansible-playbook/execute-playbook.yml
+      - run:
+          name: Check for Critical or High CVEs in Image
+          command: |
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --light --exit-code 1 --no-progress --severity CRITICAL,HIGH --ignore-unfixed ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG      
       - run:
           name: Publish to Dockerhub
           command: |
             export DOCKER_CLI_EXPERIMENTAL=enabled
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            DOCKER_TAG=`docker images | egrep ^${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
             TAG_NOT_EXISTS=`docker manifest inspect ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG > /dev/null; echo $?`
             if [[ ${TAG_NOT_EXISTS} -eq 1 ]] ; then
               docker tag ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
