@@ -3,13 +3,13 @@
 # How to run this docker image:
 
 ```shell
-    docker run -it --rm --entrypoint ansible-playbook -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook exsketrix/ansible:<ansible_version> <ansible_cmd> <ansible_playbook_args>
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook exsketrix/ansible:<ansible_version> <ansible_cmd> <ansible_playbook_args>
 ```
 
 Example execution:
 
 ```shell
-    docker run -it --rm --entrypoint ansible-playbook -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook exsketrix/ansible:3.9.9 ansible-playbook -i inventory run_playbook.yml
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook exsketrix/ansible:2.9.9 ansible-playbook -i /ansible-playbook/inventory /ansible-playbook/run_playbook.yml
 ```
 
 # Test and Development Lifecycle:

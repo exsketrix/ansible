@@ -1,0 +1,6 @@
+---
+
+- name: Execute example playbook
+  hosts: all
+  roles:
+    - example-role

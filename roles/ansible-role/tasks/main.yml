@@ -39,7 +39,7 @@
   register: docker_lint_cmd
 
 - name: Docker Lint Warnings
-  debug: 
+  debug:
     msg: "{{ docker_lint_cmd.stdout }}"
   when: docker_lint_cmd.stdout
 
