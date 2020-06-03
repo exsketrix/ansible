@@ -2,7 +2,7 @@ version: 2.1
 
 # Convert to workflow and add daily execution
 jobs:
-  Workflow:
+  all-steps:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -50,16 +50,17 @@ jobs:
             fi
 
 workflows:
-  #per-commit:
+  version: 2
+  #commit:
   #  jobs:
-  #    - build
+  #    - all-steps
   nightly:
-    jobs:
-      - Workflow
     triggers:
       - schedule:
-          cron: "22 37 * * *"
+          cron: "22 44 * * *"
           filters:
             branches:
               only:
                 - master
+    jobs:
+      - all-steps
