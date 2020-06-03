@@ -6,6 +6,7 @@ jobs:
     machine:
       image: ubuntu-1604:201903-01
     steps:
+      # TODO: Move checking of ansible version to top of file to ensure execution only occurs when there is a new version
       - checkout # check out the code in the project directory
       - run:
           name: "Set Python Version"
@@ -24,7 +25,12 @@ jobs:
           command: |
             cd roles/${CIRCLE_PROJECT_REPONAME}-role
             docker run --rm -it -v "$(pwd)":/tmp/$(basename "${PWD}"):rw -v /var/run/docker.sock:/var/run/docker.sock -w /tmp/$(basename "${PWD}") quay.io/ansible/molecule:3.0.3 molecule test
-# TODO: Add in test step to execute molecule before publishing and also try a dummy playbook execution
+      - run:
+          name: Execute Ansible Docker Image against a sample playbook
+          command: |
+            DOCKER_TAG=`docker images | egrep ^${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
+            cd test-playbook
+            docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG ansible-playbook -i /ansible-playbook/inventory /ansible-playbook/execute-playbook.yml
       - run:
           name: Publish to Dockerhub
           command: |
