@@ -1,5 +1,6 @@
 version: 2.1
 
+# Convert to workflow and add daily execution
 jobs:
   build:
     machine:
