@@ -50,6 +50,7 @@ jobs:
             fi
 
 workflows:
+  version: 2
   #per-commit:
   #  jobs:
   #    - build
@@ -58,8 +59,4 @@ workflows:
       - Workflow
     triggers:
       - schedule:
-          cron: "22 11 * * *"
-          filters:
-            branches:
-              only:
-                - master
+          cron: "22 26 * * *"
