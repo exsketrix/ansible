@@ -55,7 +55,7 @@ workflows:
   #    - build
   nightly:
     jobs:
-      - build
+      - Workflow
     triggers:
       - schedule:
           cron: "23 09 * * *"
