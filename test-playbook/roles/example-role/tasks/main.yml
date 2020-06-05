@@ -11,3 +11,10 @@
 - name: Output result of Hello World Cmd Execution
   debug:
     msg: "{{ hello_cmd.stdout }}"
+
+- name: Test executing hello world docker image
+  docker_container:
+    name: hello_world
+    image: hello-world
+    detach: false
+    recreate: true
