@@ -4,16 +4,16 @@ ENV PYTHONUNBUFFERED 1
 
 RUN pip3 install ansible=={{ansible_latest_version}} docker "pywinrm>=0.3.0"
 
-ENV ANSIBLE_LOCAL_TEMP=/tmp
+RUN apt-get update && apt-get install -y curl
 
-RUN useradd -m ansible -g root
+RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)"
+
+RUN chmod +x /usr/local/bin/gosu
+
+ENV ANSIBLE_LOCAL_TEMP=/tmp
 
 COPY entrypoint.sh /usr/bin/entrypoint
 
 RUN chmod 755 /usr/bin/entrypoint
-
-WORKDIR /home/ansible
-
-USER ansible
 
 ENTRYPOINT ["/usr/bin/entrypoint"]
