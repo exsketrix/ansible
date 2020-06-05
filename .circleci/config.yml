@@ -12,6 +12,10 @@ jobs:
       #pip search ansible | egrep ^ansible'[[:space:]]' | awk '{print $2}' | tr -d "()"
       - checkout # check out the code in the project directory
       - run:
+          name: test
+          command: |
+            getent group docker | cut -d ':' -f3
+      - run:
           name: "Set Python Version"
           command: pyenv global 3.7.0
       - run:
@@ -23,17 +27,17 @@ jobs:
       - run:
           name: Create Docker Image
           command: ansible-playbook -i inventory create-docker-image.yml
-      - run:
-          name: Execute Molecule and Testinfra against built Image
-          command: |
-            cd roles/${CIRCLE_PROJECT_REPONAME}-role
-            docker run --rm -it -v "$(pwd)":/tmp/$(basename "${PWD}"):rw -v /var/run/docker.sock:/var/run/docker.sock -w /tmp/$(basename "${PWD}") quay.io/ansible/molecule:3.0.3 molecule test
+      #- run:
+      #    name: Execute Molecule and Testinfra against built Image
+      #    command: |
+      #      cd roles/${CIRCLE_PROJECT_REPONAME}-role
+      #      docker run --rm -it -v "$(pwd)":/tmp/$(basename "${PWD}"):rw -v /var/run/docker.sock:/var/run/docker.sock -w /tmp/$(basename "${PWD}") quay.io/ansible/molecule:3.0.3 molecule test
       - run:
           name: Execute Ansible Docker Image against a sample playbook
           command: |
             DOCKER_TAG=`docker images | egrep ^${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
             cd test-playbook
-            docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG ansible-playbook -i /ansible-playbook/inventory /ansible-playbook/execute-playbook.yml
+            docker run -it --rm -e LOCAL_USER_ID=`id -u $USER` -e LOCAL_DOCKER_GROUP_ID=`getent group docker | cut -d ':' -f3` -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/ansible-playbook ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG ansible-playbook -i /ansible-playbook/inventory /ansible-playbook/execute-playbook.yml
       - run:
           name: Check for Critical or High CVEs in Image
           command: |
