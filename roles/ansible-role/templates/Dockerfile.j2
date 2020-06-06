@@ -6,14 +6,25 @@ RUN pip3 install ansible=={{ansible_latest_version}} docker "pywinrm>=0.3.0"
 
 RUN apt-get update && apt-get install -y curl
 
-RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)"
+#RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)"
 
-RUN chmod +x /usr/local/bin/gosu
+#RUN chmod +x /usr/local/bin/gosu
 
 ENV ANSIBLE_LOCAL_TEMP=/tmp
+
+RUN useradd -m ansible -g root
+
+# Make Ansible happy with arbitrary UID/GID in OpenShift.
+RUN chmod g=u /etc/passwd /etc/group
+
+RUN mkdir -p /home/user && chmod 775 /home/user && chown root:root /home/user
 
 COPY entrypoint.sh /usr/bin/entrypoint
 
 RUN chmod 755 /usr/bin/entrypoint
+
+WORKDIR /home/ansible
+
+USER ansible
 
 ENTRYPOINT ["/usr/bin/entrypoint"]
