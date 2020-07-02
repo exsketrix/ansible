@@ -1,2 +1,3 @@
 __pycache__
 .vscode
+roles/ansible-role/molecule/default/molecule.yml
