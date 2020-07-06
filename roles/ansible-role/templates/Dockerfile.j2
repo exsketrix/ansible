@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN pip3 install ansible=={{ansible_latest_version}} docker "pywinrm>=0.3.0"
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl jq
 
 RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.4/gosu-$(dpkg --print-architecture)"
 
