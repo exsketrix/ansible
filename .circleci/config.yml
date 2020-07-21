@@ -58,6 +58,9 @@ jobs:
             mkdir -p $HOME/.docker/cli-plugins/
             mv docker-pushrm $HOME/.docker/cli-plugins/
             chmod 755 $HOME/.docker/cli-plugins/docker-pushrm
+            ls $HOME/.docker/cli-plugins/
+            whoami
+            echo $HOME
             docker pushrm ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
 
 workflows:
