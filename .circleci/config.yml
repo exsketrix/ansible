@@ -54,10 +54,10 @@ jobs:
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
             fi
             DOCKERPUSHRM_URL=`curl -s https://api.github.com/repos/christian-korneck/docker-pushrm/releases/latest | jq -r '.assets[] | select(.name | test("docker-pushrm_linux_amd64")) | .browser_download_url'`
-            curl -sLO $DOCKERPUSHRM_URL
+            curl -o docker-pushrm -sLO $DOCKERPUSHRM_URL
             mkdir -p $HOME/.docker/cli-plugins/
-            mv docker-pushrm_linux_amd64 $HOME/.docker/cli-plugins/
-            chmod 755 $HOME/.docker/cli-plugins/docker-pushrm_linux_amd64
+            mv docker-pushrm $HOME/.docker/cli-plugins/
+            chmod 755 $HOME/.docker/cli-plugins/docker-pushrm
             docker pushrm ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
 
 workflows:
