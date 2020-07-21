@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  docker: circleci/docker@1.3.0
 
 # Convert to workflow and add daily execution
 jobs:
@@ -51,7 +53,8 @@ jobs:
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
             fi
-
+      - docker/update-description:
+          image: ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
 workflows:
   version: 2
   commit:
