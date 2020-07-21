@@ -54,7 +54,6 @@ jobs:
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
             fi
       - docker/update-description:
-          name: Add readme to description
           image: ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
           docker-username: CIRCLE_PROJECT_USERNAME
           docker-password: DOCKER_PASS
