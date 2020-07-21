@@ -53,6 +53,7 @@ jobs:
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
             fi
+            echo docker run --rm -v ${PWD}:/workspace -e DOCKER_USER='$DOCKER_USER' -e DOCKER_PASS='$DOCKER_PASS' chko/docker-pushrm:1 --file /workspace/README.md exsketrix/ansible
             docker run --rm -v ${PWD}:/workspace -e DOCKER_USER='$DOCKER_USER' -e DOCKER_PASS='$DOCKER_PASS' chko/docker-pushrm:1 --file /workspace/README.md exsketrix/ansible
 
 workflows:
