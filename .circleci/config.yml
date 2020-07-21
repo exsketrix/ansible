@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  docker: circleci/docker@1.3.0
 
 # Convert to workflow and add daily execution
 jobs:
@@ -51,6 +53,11 @@ jobs:
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
               docker push ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
             fi
+      - docker/publish:
+          name: Add readme to description
+          image: ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
+          update-description: true
+          use-docker-credentials-store: true
 
 workflows:
   version: 2
