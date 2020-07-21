@@ -55,6 +55,8 @@ jobs:
             fi
       - docker/update-description:
           image: ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASS
 workflows:
   version: 2
   commit:
