@@ -17,6 +17,10 @@ jobs:
           name: "Set Python Version"
           command: pyenv global 3.7.0
       - run:
+          name: Install pre-reqs
+          command: |
+            apt-get install cargo rust
+      - run:
           name: Install Ansible
           command: |  # use pipenv to install dependencies
             python  --version
