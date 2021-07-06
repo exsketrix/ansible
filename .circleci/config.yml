@@ -19,6 +19,7 @@ jobs:
       - run:
           name: Install pre-reqs
           command: |
+            sudo apt-get update
             sudo apt-get install cargo rust
       - run:
           name: Install Ansible
