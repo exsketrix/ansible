@@ -19,8 +19,7 @@ jobs:
       - run:
           name: Install pre-reqs
           command: |
-            sudo apt-get update
-            sudo apt-get install cargo rust
+            curl https://sh.rustup.rs -sSf | sh
       - run:
           name: Install Ansible
           command: |  # use pipenv to install dependencies
