@@ -16,14 +16,15 @@ jobs:
       - run:
           name: "Set Python Version"
           command: pyenv global 3.7.0
-      - run:
-          name: Install pre-reqs
-          command: |
-            curl https://sh.rustup.rs -sSf | sh -s -- -y
+      #- run:
+      #    name: Install pre-reqs
+      #    command: |
+      #      curl https://sh.rustup.rs -sSf | sh -s -- -y
       - run:
           name: Install Ansible
           command: |  # use pipenv to install dependencies
             python  --version
+            pip install --upgrade pip
             pip install ansible
             pip install docker
       - run:
