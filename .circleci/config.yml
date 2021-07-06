@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Install pre-reqs
           command: |
-            curl https://sh.rustup.rs -sSf | sh
+            curl https://sh.rustup.rs -sSf | sh -s -- -y
       - run:
           name: Install Ansible
           command: |  # use pipenv to install dependencies
