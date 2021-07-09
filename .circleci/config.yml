@@ -42,7 +42,8 @@ jobs:
           name: Check for Critical or High CVEs in Image
           command: |
             DOCKER_TAG=`docker images | egrep ^${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} | awk '{print $2}'`
-            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --light --exit-code 1 --no-progress --severity CRITICAL,HIGH --ignore-unfixed ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG      
+            #docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --light --exit-code 1 --no-progress --severity CRITICAL,HIGH --ignore-unfixed ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --light --exit-code 1 --no-progress --severity CRITICAL,HIGH --ignore-unfixed --vuln-type os ${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:$DOCKER_TAG
       - run:
           name: Publish to Dockerhub
           command: |
